@@ -69,6 +69,16 @@ function searchDifferentPatient() {
 function rowClassName({ row }) {
   return row.id === props.selectedPatient?.id ? 'selected-row' : ''
 }
+
+function getPatientInitials(patient) {
+  if (!patient) return '?'
+
+  const given = (patient.name || '').trim().charAt(0).toUpperCase()
+  const family = (patient.familyName || '').trim().charAt(0).toUpperCase()
+  const initials = `${given}${family}`
+
+  return initials || '?'
+}
 </script>
 
 <template>
@@ -77,7 +87,7 @@ function rowClassName({ row }) {
     <div v-if="selectedPatient && !expanded" class="patient-bar">
       <button class="patient-bar-main" type="button" @click="emit('expand')">
         <div class="patient-bar-icon">
-          <span>{{ (selectedPatient.name || '?').charAt(0).toUpperCase() }}</span>
+          <span>{{ getPatientInitials(selectedPatient) }}</span>
         </div>
         <div class="patient-bar-info">
           <span class="patient-bar-label">Selected Patient</span>
