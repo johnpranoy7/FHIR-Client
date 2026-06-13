@@ -94,38 +94,40 @@ async function handleDownload(document) {
     <template v-else>
       <el-alert v-if="error" :title="error" type="warning" show-icon :closable="false" />
 
-      <el-table
-        v-loading="loading"
-        :data="documents"
-        stripe
-        class="documents-table"
-        empty-text="No documents available"
-      >
-        <el-table-column prop="id" label="Document ID" width="140" />
-        <el-table-column prop="title" label="Title" min-width="200" />
-        <el-table-column prop="contentType" label="Content Type" min-width="180" />
-        <el-table-column label="Downloadable" width="130">
-          <template #default="{ row }">
-            <el-tag :type="row.downloadable ? 'success' : 'info'" effect="light">
-              {{ row.downloadable ? 'Yes' : 'View only' }}
-            </el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column label="Action" width="140" fixed="right">
-          <template #default="{ row }">
-            <el-button
-              v-if="row.downloadable && row.binaryId"
-              size="small"
-              type="primary"
-              :loading="downloadingId === row.id"
-              @click="handleDownload(row)"
-            >
-              Download
-            </el-button>
-            <el-text v-else type="info">N/A</el-text>
-          </template>
-        </el-table-column>
-      </el-table>
+      <div class="table-scroll">
+        <el-table
+          v-loading="loading"
+          :data="documents"
+          stripe
+          class="documents-table"
+          empty-text="No documents available"
+        >
+          <el-table-column prop="id" label="Document ID" width="140" />
+          <el-table-column prop="title" label="Title" min-width="180" />
+          <el-table-column prop="contentType" label="Content Type" min-width="160" />
+          <el-table-column label="Downloadable" width="130">
+            <template #default="{ row }">
+              <el-tag :type="row.downloadable ? 'success' : 'info'" effect="light">
+                {{ row.downloadable ? 'Yes' : 'View only' }}
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column label="Action" width="140" fixed="right">
+            <template #default="{ row }">
+              <el-button
+                v-if="row.downloadable && row.binaryId"
+                size="small"
+                type="primary"
+                :loading="downloadingId === row.id"
+                @click="handleDownload(row)"
+              >
+                Download
+              </el-button>
+              <el-text v-else type="info">N/A</el-text>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
     </template>
   </section>
 </template>
@@ -139,8 +141,10 @@ async function handleDownload(document) {
 }
 
 .documents-section.active {
-  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.08);
-  border-color: #dbeafe;
+  border-color: var(--app-border-strong);
+  box-shadow:
+    0 0 0 1px rgba(34, 211, 238, 0.08),
+    0 24px 60px rgba(0, 0, 0, 0.35);
 }
 
 .documents-header {
@@ -157,8 +161,12 @@ async function handleDownload(document) {
 
 .documents-header p {
   margin: 0;
-  color: #6b7280;
+  color: var(--app-text-muted);
   font-size: 0.92rem;
+}
+
+.documents-header strong {
+  color: var(--app-accent);
 }
 
 .documents-empty {
@@ -169,12 +177,24 @@ async function handleDownload(document) {
 }
 
 .empty-icon {
-  font-size: 3rem;
-  opacity: 0.5;
+  font-size: 3.5rem;
+  filter: grayscale(0.3);
+  opacity: 0.7;
 }
 
 .documents-table {
   width: 100%;
   flex: 1;
+}
+
+@media (max-width: 767px) {
+  .documents-section {
+    min-height: 320px;
+  }
+
+  .documents-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 </style>

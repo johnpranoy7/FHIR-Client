@@ -88,7 +88,7 @@ function rowClassName({ row }) {
         </div>
         <el-icon class="expand-icon"><ArrowDown /></el-icon>
       </button>
-      <el-button plain size="small" @click="searchDifferentPatient">
+      <el-button class="change-patient-btn" plain size="small" @click="searchDifferentPatient">
         Change Patient
       </el-button>
     </div>
@@ -128,10 +128,10 @@ function rowClassName({ row }) {
 
       <el-form inline class="search-form" @submit.prevent="handleSearch">
         <el-form-item label="Given Name">
-          <el-input v-model="givenName" placeholder="John" clearable />
+          <el-input v-model="givenName" placeholder="Ashley" clearable />
         </el-form-item>
         <el-form-item label="Family Name">
-          <el-input v-model="familyName" placeholder="Smith" clearable />
+          <el-input v-model="familyName" placeholder="Young" clearable />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" :loading="loading" @click="handleSearch">
@@ -149,32 +149,33 @@ function rowClassName({ row }) {
         class="search-alert"
       />
 
-      <el-table
-        v-if="patients.length"
-        :data="patients"
-        :row-class-name="rowClassName"
-        stripe
-        class="patient-table"
-        @row-click="selectPatient"
-      >
-        <el-table-column prop="id" label="ID" width="120" />
-        <el-table-column prop="mrn" label="MRN" width="120" />
-        <el-table-column prop="name" label="Given Name" />
-        <el-table-column prop="familyName" label="Family Name" />
-        <el-table-column prop="birthDate" label="Birth Date" width="130" />
-        <el-table-column prop="gender" label="Gender" width="100" />
-        <el-table-column label="Action" width="120">
-          <template #default="{ row }">
-            <el-button
-              size="small"
-              :type="row.id === selectedPatient?.id ? 'success' : 'primary'"
-              @click.stop="selectPatient(row)"
-            >
-              {{ row.id === selectedPatient?.id ? 'Selected' : 'Select' }}
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+      <div v-if="patients.length" class="table-scroll">
+        <el-table
+          :data="patients"
+          :row-class-name="rowClassName"
+          stripe
+          class="patient-table"
+          @row-click="selectPatient"
+        >
+          <el-table-column prop="id" label="ID" width="120" />
+          <el-table-column prop="mrn" label="MRN" width="120" />
+          <el-table-column prop="name" label="Given Name" min-width="120" />
+          <el-table-column prop="familyName" label="Family Name" min-width="120" />
+          <el-table-column prop="birthDate" label="Birth Date" width="130" />
+          <el-table-column prop="gender" label="Gender" width="100" />
+          <el-table-column label="Action" width="120" fixed="right">
+            <template #default="{ row }">
+              <el-button
+                size="small"
+                :type="row.id === selectedPatient?.id ? 'success' : 'primary'"
+                @click.stop="selectPatient(row)"
+              >
+                {{ row.id === selectedPatient?.id ? 'Selected' : 'Select' }}
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
     </div>
   </section>
 </template>
@@ -192,11 +193,19 @@ function rowClassName({ row }) {
   display: flex;
   align-items: center;
   gap: 12px;
-  background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
-  color: #fff;
-  border-radius: 14px;
-  padding: 12px 16px;
-  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.25);
+  flex-wrap: wrap;
+  background: linear-gradient(135deg, rgba(8, 145, 178, 0.35) 0%, rgba(99, 102, 241, 0.35) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--app-border-strong);
+  color: var(--app-text);
+  border-radius: var(--app-radius);
+  padding: 14px 18px;
+  box-shadow: 0 16px 40px rgba(34, 211, 238, 0.12);
+}
+
+.change-patient-btn {
+  flex-shrink: 0;
 }
 
 .patient-bar-main {
@@ -210,18 +219,25 @@ function rowClassName({ row }) {
   cursor: pointer;
   text-align: left;
   padding: 0;
+  transition: opacity 0.2s;
+}
+
+.patient-bar-main:hover {
+  opacity: 0.9;
 }
 
 .patient-bar-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.18);
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #0891b2, #6366f1);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
+  font-weight: 800;
   font-size: 1.1rem;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(34, 211, 238, 0.3);
 }
 
 .patient-bar-info {
@@ -231,26 +247,28 @@ function rowClassName({ row }) {
 }
 
 .patient-bar-label {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  opacity: 0.8;
+  letter-spacing: 0.1em;
+  color: var(--app-accent);
+  font-weight: 700;
 }
 
 .patient-bar-name {
-  font-size: 1.05rem;
-  font-weight: 600;
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: var(--app-text);
 }
 
 .patient-bar-id {
   font-size: 0.85rem;
-  opacity: 0.85;
+  color: var(--app-text-muted);
 }
 
 .expand-icon {
   margin-left: auto;
   font-size: 1.1rem;
-  opacity: 0.85;
+  color: var(--app-accent);
 }
 
 .panel-header {
@@ -267,7 +285,7 @@ function rowClassName({ row }) {
 
 .panel-header p {
   margin: 0;
-  color: #6b7280;
+  color: var(--app-text-muted);
   font-size: 0.9rem;
 }
 
@@ -276,10 +294,10 @@ function rowClassName({ row }) {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  background: #ecfdf5;
-  border: 1px solid #a7f3d0;
-  border-radius: 10px;
-  padding: 12px 16px;
+  background: var(--app-success-soft);
+  border: 1px solid rgba(52, 211, 153, 0.28);
+  border-radius: 14px;
+  padding: 14px 18px;
   margin-bottom: 20px;
 }
 
@@ -290,19 +308,23 @@ function rowClassName({ row }) {
   gap: 8px;
 }
 
+.banner-content strong {
+  color: var(--app-text);
+}
+
 .banner-badge {
-  background: #059669;
+  background: linear-gradient(135deg, #059669, #10b981);
   color: #fff;
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 3px 8px;
+  letter-spacing: 0.06em;
+  padding: 4px 10px;
   border-radius: 999px;
 }
 
 .banner-meta {
-  color: #047857;
+  color: var(--app-success);
   font-size: 0.88rem;
 }
 
@@ -320,10 +342,39 @@ function rowClassName({ row }) {
 }
 
 :deep(.selected-row) {
-  --el-table-tr-bg-color: #eff6ff;
+  --el-table-tr-bg-color: rgba(34, 211, 238, 0.08) !important;
 }
 
 :deep(.selected-row td) {
   font-weight: 600;
+  color: var(--app-accent) !important;
+}
+
+@media (max-width: 767px) {
+  .patient-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .patient-bar-main {
+    width: 100%;
+  }
+
+  .change-patient-btn {
+    width: 100%;
+  }
+
+  .current-patient-banner {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .panel-header {
+    flex-direction: column;
+  }
+
+  .search-form :deep(.el-form-item) {
+    margin-bottom: 12px;
+  }
 }
 </style>

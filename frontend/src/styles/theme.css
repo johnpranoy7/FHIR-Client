@@ -1,0 +1,169 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --app-bg: #06080f;
+  --app-bg-elevated: #0c1019;
+  --app-surface: rgba(15, 23, 42, 0.55);
+  --app-surface-solid: #111827;
+  --app-surface-hover: rgba(30, 41, 59, 0.8);
+  --app-border: rgba(148, 163, 184, 0.14);
+  --app-border-strong: rgba(34, 211, 238, 0.35);
+  --app-text: #e2e8f0;
+  --app-text-muted: #94a3b8;
+  --app-text-dim: #64748b;
+  --app-accent: #22d3ee;
+  --app-accent-soft: rgba(34, 211, 238, 0.12);
+  --app-accent-2: #818cf8;
+  --app-success: #34d399;
+  --app-success-soft: rgba(52, 211, 153, 0.12);
+  --app-glow-cyan: rgba(34, 211, 238, 0.22);
+  --app-glow-violet: rgba(129, 140, 248, 0.18);
+  --app-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  --app-radius: 18px;
+  --app-font: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --nav-width: 380px;
+}
+
+html.dark {
+  --el-color-primary: #22d3ee;
+  --el-color-primary-light-3: #0891b2;
+  --el-color-primary-light-5: #0e7490;
+  --el-color-primary-light-7: #155e75;
+  --el-color-primary-light-8: #164e63;
+  --el-color-primary-light-9: rgba(34, 211, 238, 0.12);
+  --el-color-primary-dark-2: #67e8f9;
+  --el-color-success: #34d399;
+  --el-bg-color: #0c1019;
+  --el-bg-color-page: #06080f;
+  --el-bg-color-overlay: #111827;
+  --el-text-color-primary: #e2e8f0;
+  --el-text-color-regular: #cbd5e1;
+  --el-text-color-secondary: #94a3b8;
+  --el-border-color: rgba(148, 163, 184, 0.16);
+  --el-border-color-light: rgba(148, 163, 184, 0.1);
+  --el-fill-color-blank: rgba(15, 23, 42, 0.6);
+  --el-fill-color-light: rgba(30, 41, 59, 0.5);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--app-font);
+  background: var(--app-bg);
+  color: var(--app-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+.card {
+  background: var(--app-surface);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius);
+  padding: clamp(16px, 2.5vw, 24px);
+  box-shadow: var(--app-shadow);
+}
+
+.card h2 {
+  margin: 0 0 16px;
+  font-size: 1.15rem;
+  color: var(--app-text);
+  font-weight: 700;
+}
+
+.el-button--primary {
+  --el-button-bg-color: linear-gradient(135deg, #0891b2, #6366f1);
+  background: linear-gradient(135deg, #0891b2 0%, #6366f1 100%) !important;
+  border: none !important;
+  box-shadow: 0 8px 24px rgba(34, 211, 238, 0.25);
+}
+
+.el-button--primary:hover {
+  filter: brightness(1.08);
+}
+
+.el-input__wrapper,
+.el-select__wrapper {
+  background: rgba(15, 23, 42, 0.8) !important;
+  box-shadow: 0 0 0 1px var(--app-border) inset !important;
+}
+
+.el-table {
+  --el-table-bg-color: transparent;
+  --el-table-tr-bg-color: transparent;
+  --el-table-header-bg-color: rgba(15, 23, 42, 0.9);
+  --el-table-header-text-color: var(--app-text-muted);
+  --el-table-row-hover-bg-color: rgba(34, 211, 238, 0.06);
+  --el-table-border-color: var(--app-border);
+  --el-table-text-color: var(--app-text);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.el-table--striped .el-table__body tr.el-table__row--striped td.el-table__cell {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.el-form-item__label {
+  color: var(--app-text-muted) !important;
+}
+
+.el-empty__description p {
+  color: var(--app-text-dim);
+}
+
+.el-tag {
+  border: none;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.25);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.4);
+}
+
+.table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-scroll .el-table {
+  min-width: 640px;
+}
+
+@media (max-width: 767px) {
+  .el-form--inline .el-form-item {
+    display: flex;
+    margin-right: 0;
+    width: 100%;
+  }
+
+  .el-form--inline .el-form-item__content {
+    flex: 1;
+  }
+
+  .el-form--inline .el-input {
+    width: 100%;
+  }
+}
