@@ -22,6 +22,11 @@ public class ClientController {
         this.fhirService = fhirService;
     }
 
+    @GetMapping("/health")
+    public String health() {
+        return "OK";
+    }
+
     @GetMapping("/Patient")
     public List<PatientDTO> searchPatientByName(
             @RequestParam(required = false) String name,
