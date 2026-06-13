@@ -66,37 +66,52 @@ async function handleDownload(document) {
 </script>
 
 <template>
-  <div class="card">
-    <h2>Patient Documents</h2>
+  <section class="documents-section card" :class="{ active: patient }">
+    <div class="documents-header">
+      <div>
+        <h2>Patient Documents</h2>
+        <p v-if="patient">
+          Clinical documents linked to
+          <strong>{{ patient.name }} {{ patient.familyName }}</strong>
+        </p>
+        <p v-else>Select a patient above to view their documents.</p>
+      </div>
+      <el-tag v-if="patient && documents.length" type="primary" effect="plain">
+        {{ documents.length }} document{{ documents.length === 1 ? '' : 's' }}
+      </el-tag>
+    </div>
 
-    <el-empty v-if="!patient" description="Select a patient to view documents." />
+    <el-empty
+      v-if="!patient"
+      class="documents-empty"
+      description="No patient selected"
+    >
+      <template #image>
+        <div class="empty-icon">📄</div>
+      </template>
+    </el-empty>
 
     <template v-else>
-      <div class="selected-patient">
-        <el-tag type="info">
-          {{ patient.name }} {{ patient.familyName }} (ID: {{ patient.id }})
-        </el-tag>
-      </div>
-
       <el-alert v-if="error" :title="error" type="warning" show-icon :closable="false" />
 
       <el-table
         v-loading="loading"
         :data="documents"
         stripe
-        style="width: 100%"
+        class="documents-table"
+        empty-text="No documents available"
       >
         <el-table-column prop="id" label="Document ID" width="140" />
-        <el-table-column prop="title" label="Title" min-width="180" />
+        <el-table-column prop="title" label="Title" min-width="200" />
         <el-table-column prop="contentType" label="Content Type" min-width="180" />
         <el-table-column label="Downloadable" width="130">
           <template #default="{ row }">
-            <el-tag :type="row.downloadable ? 'success' : 'info'">
+            <el-tag :type="row.downloadable ? 'success' : 'info'" effect="light">
               {{ row.downloadable ? 'Yes' : 'View only' }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="Action" width="140">
+        <el-table-column label="Action" width="140" fixed="right">
           <template #default="{ row }">
             <el-button
               v-if="row.downloadable && row.binaryId"
@@ -112,5 +127,54 @@ async function handleDownload(document) {
         </el-table-column>
       </el-table>
     </template>
-  </div>
+  </section>
 </template>
+
+<style scoped>
+.documents-section {
+  flex: 1;
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+}
+
+.documents-section.active {
+  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.08);
+  border-color: #dbeafe;
+}
+
+.documents-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.documents-header h2 {
+  margin: 0 0 6px;
+}
+
+.documents-header p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.92rem;
+}
+
+.documents-empty {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-icon {
+  font-size: 3rem;
+  opacity: 0.5;
+}
+
+.documents-table {
+  width: 100%;
+  flex: 1;
+}
+</style>
