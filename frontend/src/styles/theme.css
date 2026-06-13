@@ -146,10 +146,28 @@ body {
   width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  border-radius: 12px;
 }
 
 .table-scroll .el-table {
   min-width: 640px;
+}
+
+@media (max-width: 767px) {
+  .table-scroll {
+    margin: 0 -4px;
+    padding-bottom: 4px;
+  }
+
+  .table-scroll .el-table {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .table-scroll :deep(.el-table__body-wrapper),
+  .table-scroll :deep(.el-table__header-wrapper) {
+    overflow: visible;
+  }
 }
 
 @media (max-width: 767px) {

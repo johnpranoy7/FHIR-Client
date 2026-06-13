@@ -2,6 +2,7 @@
 import { ref, watch } from 'vue'
 import { ArrowDown } from '@element-plus/icons-vue'
 import { searchPatients } from '../api/fhirApi'
+import { useMediaQuery } from '../composables/useMediaQuery'
 
 const props = defineProps({
   selectedPatient: {
@@ -21,6 +22,7 @@ const familyName = ref('')
 const patients = ref([])
 const loading = ref(false)
 const error = ref('')
+const isNarrowViewport = useMediaQuery('(max-width: 1130px)')
 
 watch(
   () => props.selectedPatient,
@@ -143,8 +145,8 @@ function getPatientInitials(patient) {
         <el-form-item label="Family Name">
           <el-input v-model="familyName" placeholder="Young" clearable />
         </el-form-item>
-        <el-form-item>
-          <el-button type="primary" :loading="loading" @click="handleSearch">
+        <el-form-item class="search-submit-item">
+          <el-button type="primary" class="search-submit-btn" :loading="loading" @click="handleSearch">
             Search
           </el-button>
         </el-form-item>
@@ -167,13 +169,13 @@ function getPatientInitials(patient) {
           class="patient-table"
           @row-click="selectPatient"
         >
-          <el-table-column prop="id" label="ID" width="120" />
-          <el-table-column prop="mrn" label="MRN" width="120" />
-          <el-table-column prop="name" label="Given Name" min-width="120" />
-          <el-table-column prop="familyName" label="Family Name" min-width="120" />
-          <el-table-column prop="birthDate" label="Birth Date" width="130" />
-          <el-table-column prop="gender" label="Gender" width="100" />
-          <el-table-column label="Action" width="120" fixed="right">
+          <el-table-column v-if="!isNarrowViewport" prop="id" label="ID" :width="isNarrowViewport ? 90 : 120" />
+          <el-table-column v-if="!isNarrowViewport" prop="mrn" label="MRN" width="120" />
+          <el-table-column prop="name" label="Given Name" :min-width="isNarrowViewport ? 100 : 120" />
+          <el-table-column prop="familyName" label="Family Name" :min-width="isNarrowViewport ? 100 : 120" />
+          <el-table-column v-if="!isNarrowViewport" prop="birthDate" label="Birth Date" width="130" />
+          <el-table-column v-if="!isNarrowViewport" prop="gender" label="Gender" width="100" />
+          <el-table-column label="Action" :width="isNarrowViewport ? 100 : 120">
             <template #default="{ row }">
               <el-button
                 size="small"
@@ -342,6 +344,34 @@ function getPatientInitials(patient) {
   margin-bottom: 8px;
 }
 
+@media (max-width: 1130px) {
+  .search-form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-form :deep(.el-form-item) {
+    margin-right: 0;
+    width: 100%;
+  }
+
+  .search-form :deep(.search-submit-item) {
+    margin-bottom: 0;
+  }
+
+  .search-form :deep(.search-submit-item .el-form-item__content) {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .search-submit-btn {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
 .search-alert {
   margin-bottom: 16px;
 }
@@ -349,6 +379,10 @@ function getPatientInitials(patient) {
 .patient-table {
   width: 100%;
   margin-top: 8px;
+}
+
+.patient-table :deep(.el-table__row) {
+  cursor: pointer;
 }
 
 :deep(.selected-row) {
@@ -381,10 +415,6 @@ function getPatientInitials(patient) {
 
   .panel-header {
     flex-direction: column;
-  }
-
-  .search-form :deep(.el-form-item) {
-    margin-bottom: 12px;
   }
 }
 </style>

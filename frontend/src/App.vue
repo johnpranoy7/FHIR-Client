@@ -85,10 +85,6 @@ function closeNav() {
         </div>
 
         <div class="header-right">
-          <div class="header-badge">
-            <span class="pulse" />
-            Live FHIR R4
-          </div>
 
           <div class="developer-card">
             <span class="developer-label">Developer</span>
@@ -407,6 +403,7 @@ function closeNav() {
     font-size: 0.65rem;
     letter-spacing: 0.08em;
   }
+  
 
   .developer-card {
     padding: 8px 12px;
@@ -414,6 +411,17 @@ function closeNav() {
 
   .developer-name {
     font-size: 0.82rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .developer-label{
+    display: flex;
+    justify-content: center;
+  }
+  .developer-links{
+    display: flex;
+    justify-content: center;
   }
 }
 

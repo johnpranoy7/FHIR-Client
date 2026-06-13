@@ -1,6 +1,7 @@
 <script setup>
 import { ref, watch } from 'vue'
 import { downloadBinary, getDocumentsByPatient } from '../api/fhirApi'
+import { useMediaQuery } from '../composables/useMediaQuery'
 
 const props = defineProps({
   patient: {
@@ -13,6 +14,7 @@ const documents = ref([])
 const loading = ref(false)
 const error = ref('')
 const downloadingId = ref(null)
+const isNarrowViewport = useMediaQuery('(max-width: 767px)')
 
 watch(
   () => props.patient,
@@ -102,17 +104,17 @@ async function handleDownload(document) {
           class="documents-table"
           empty-text="No documents available"
         >
-          <el-table-column prop="id" label="Document ID" width="140" />
-          <el-table-column prop="title" label="Title" min-width="180" />
-          <el-table-column prop="contentType" label="Content Type" min-width="160" />
-          <el-table-column label="Downloadable" width="130">
+          <el-table-column v-if="!isNarrowViewport" prop="id" label="Document ID" width="140" />
+          <el-table-column prop="title" label="Title" :min-width="isNarrowViewport ? 140 : 180" />
+          <el-table-column v-if="!isNarrowViewport" prop="contentType" label="Content Type" min-width="160" />
+          <el-table-column v-if="!isNarrowViewport" label="Downloadable" width="130">
             <template #default="{ row }">
               <el-tag :type="row.downloadable ? 'success' : 'info'" effect="light">
                 {{ row.downloadable ? 'Yes' : 'View only' }}
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="Action" width="140" fixed="right">
+          <el-table-column label="Action" :width="isNarrowViewport ? 110 : 140">
             <template #default="{ row }">
               <el-button
                 v-if="row.downloadable && row.binaryId"

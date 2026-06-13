@@ -59,15 +59,6 @@ const flowSteps = [
       </button>
     </div>
 
-    <button
-      v-if="compact && open"
-      type="button"
-      class="drawer-edge-close"
-      aria-label="Close panel"
-      @click="$emit('close')"
-    >
-      <el-icon><Close /></el-icon>
-    </button>
 
     <div class="nav-content">
       <div class="nav-section">
