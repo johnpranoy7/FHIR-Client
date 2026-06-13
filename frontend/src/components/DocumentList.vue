@@ -14,7 +14,7 @@ const documents = ref([])
 const loading = ref(false)
 const error = ref('')
 const downloadingId = ref(null)
-const isNarrowViewport = useMediaQuery('(max-width: 767px)')
+const isNarrowViewport = useMediaQuery('(max-width: 1130px)')
 
 watch(
   () => props.patient,
