@@ -1,5 +1,7 @@
 # HL7 FHIR Client
 
+**Live Demo:** [https://fhir-client.onrender.com/](https://fhir-client.onrender.com/)
+
 A **Health IT portfolio project** that demonstrates patient search and clinical document retrieval using the [HL7® FHIR®](https://www.hl7.org/fhir/) standard. The app connects to the public [HAPI FHIR R4 test server](http://hapi.fhir.org/baseR4/), fetches FHIR resources through a Spring Boot API, and presents results in a Vue 3 web UI.
 
 **Developer:** [John Pranoy Yalla](https://github.com/johnpranoy7/) · [LinkedIn](https://www.linkedin.com/in/johnpranoy7/)
